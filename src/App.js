@@ -27,6 +27,11 @@ const App = () => {
     telp: ""
   })
 
+  const [isEdit, setIsEdit] = useState({
+    id: null,
+    status: false
+  })
+
   const handleChange = (e) => {
     let data = {...formData} //copy semua data di State formData
     data[e.target.id] = e.target.value //ambil data dari input box
@@ -34,6 +39,7 @@ const App = () => {
   }
 
   const handleSubmit = (e) => {
+    e.preventDefault()
     let data = [...contacts] //copy semua data di State contacts
 
     if(formData.name === ""){
@@ -45,11 +51,35 @@ const App = () => {
       return false
     }
 
-    e.preventDefault()
-    alert("Berhasil Menambah Contact")
-    data.push({id: uid(), name: formData.name, telp: formData.telp}) //masukkan semua data dari input ke State contacts
+    if(isEdit.status){
+      data.forEach((contact) => {
+        if(contact.id === isEdit.id){
+          contact.name = formData.name
+          contact.telp = formData.telp
+        }
+      })
+      alert("Berhasil Edit Contact")
+    } else {
+      data.push({id: uid(), name: formData.name, telp: formData.telp}) //masukkan semua data dari input ke State contacts
+      alert("Berhasil Menambah Contact")
+    }
+
+    setIsEdit({id: null, status: false})
     setContacts(data)
     setFormData({name: "", telp: ""}) //kosongkan input setelah berhasil submit
+  }
+
+  const handleEdit = (idEdit) => {
+    let data = [...contacts]
+    let findData = data.find((contact) => contact.id === idEdit) //cari data contact berdasarkan id contact yang di Edit
+    setFormData({name: findData.name, telp: findData.telp}) //set input box dengan data contact yang telah ditemukan
+    setIsEdit({id: idEdit, status: true})
+  }
+
+  const handleDelete = (idDelete) => {
+    let data = [...contacts]
+    let filterData = data.filter((contact) => contact.id !== idDelete)  //menampilkan data contact kecuali id yang di delete
+    setContacts(filterData)
   }
 
   return (
@@ -69,7 +99,7 @@ const App = () => {
             </div>
             <button type="submit" className="btn btn-primary w-100 mt-2">Save</button>
           </form>
-          <List dataContact={contacts} />
+          <List dataContact={contacts} handleEdit={handleEdit} handleDelete={handleDelete} />
         </div>
       </div>
     </div>

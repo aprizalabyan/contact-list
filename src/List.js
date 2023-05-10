@@ -1,6 +1,6 @@
 import React from 'react'
 
-const List = ({dataContact}) => {
+const List = ({dataContact, handleEdit, handleDelete}) => {
   return (
     <div className="mt-5">
       <h5>Contact List</h5>
@@ -13,8 +13,8 @@ const List = ({dataContact}) => {
                 <span className="telp">{contact.telp}</span>
               </div>
               <div className="d-flex gap-2 align-self-end">
-                <button className="btn btn-dark">Edit</button>
-                <button className="btn btn-danger">Delete</button>
+                <button className="btn btn-dark" onClick={() => handleEdit(contact.id)}>Edit</button>
+                <button className="btn btn-danger" onClick={() => handleDelete(contact.id)}>Delete</button>
               </div>
             </div>
           )
