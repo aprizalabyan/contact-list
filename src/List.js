@@ -7,7 +7,7 @@ const List = ({dataContact, handleEdit, handleDelete}) => {
       <div className="list-group">
         {dataContact.map((contact) => {
           return(
-            <div className="list-group-item d-flex justify-content-between align-items-start">
+            <div className="list-group-item d-flex justify-content-between align-items-start" key={contact.id}>
               <div className="d-flex flex-column">
                 <span className="name">{contact.name}</span>
                 <span className="telp">{contact.telp}</span>
