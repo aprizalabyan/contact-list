@@ -10,12 +10,12 @@ const App = () => {
   const [contacts, setContacts] = useState([])
   const [formData, setFormData] = useState({ name: "", telp: "" })
   const [isEdit, setIsEdit] = useState({ id: null, status: false })
-  const urlAPI = 'http://localhost:3004/contacts'
+  const urlAPI = 'https://v1.nocodeapi.com/lingling55555/google_sheets/XQxEOzuPMTbFntNk?tabId=Sheet1'
 
   useEffect(() => {
     axios.get(urlAPI).then((res) => {
-      console.log(res.data)
-      setContacts(res?.data ?? [])
+      console.log(res.data.data)
+      setContacts(res?.data.data ?? [])
     })
   }, [])
 
