@@ -13,7 +13,7 @@ const App = () => {
 
   useEffect(() => {
     axios.get(process.env.REACT_APP_urlAPI).then((res) => {
-      console.log(res.data.data)
+      // console.log(res.data.data)
       setContacts(res?.data.data ?? [])
     })
   }, [])
@@ -46,9 +46,9 @@ const App = () => {
       })
       const edited = {"row_id":""+isEdit.idRow, "name":""+formData.name, "telp":""+formData.telp}
       axios.put(process.env.REACT_APP_urlAPI+'&row_id='+isEdit.idRow, edited).then((res) => {
-        console.log(res)
+        // console.log(res)
       }).catch((err) => {
-        console.log(err)
+        // console.log(err)
       })
       updateModal.show()
       setTimeout(() => { updateModal.hide() }, 3000)
@@ -57,9 +57,9 @@ const App = () => {
       data.push(newData) //masukkan semua data dari input ke State contacts
       const added = [[uid(), formData.name, formData.telp]]
       axios.post(process.env.REACT_APP_urlAPI, added).then((res) => {
-        console.log(res)
+        // console.log(res)
       }).catch((err) => {
-        console.log(err)
+        // console.log(err)
       })
       successModal.show()
       setTimeout(() => { successModal.hide() }, 3000)
@@ -81,9 +81,9 @@ const App = () => {
     let data = [...contacts]
     let filterData = data.filter((contact) => contact.id !== idDelete)  //menampilkan data contact kecuali id yang di delete
     axios.delete(process.env.REACT_APP_urlAPI+'&row_id='+idRowDelete).then((res) => {
-      console.log(res)
+      // console.log(res)
     }).catch((err) => {
-      console.log(err)
+      // console.log(err)
     })
     deleteModal.show()
     setTimeout(() => { deleteModal.hide() }, 3000)
