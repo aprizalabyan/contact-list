@@ -9,11 +9,10 @@ import axios from 'axios';
 const App = () => {
   const [contacts, setContacts] = useState([])
   const [formData, setFormData] = useState({ name: "", telp: "" })
-  const [isEdit, setIsEdit] = useState({ id: null, status: false })
-  const urlAPI = 'https://v1.nocodeapi.com/lingling55555/google_sheets/XQxEOzuPMTbFntNk?tabId=Sheet1'
+  const [isEdit, setIsEdit] = useState({ idRow: null, id: null, status: false })
 
   useEffect(() => {
-    axios.get(urlAPI).then((res) => {
+    axios.get(process.env.REACT_APP_urlAPI).then((res) => {
       console.log(res.data.data)
       setContacts(res?.data.data ?? [])
     })
@@ -45,39 +44,46 @@ const App = () => {
           contact.telp = formData.telp
         }
       })
-      axios.put(urlAPI+'/'+isEdit.id, {name: formData.name, telp: formData.telp}).then((res) => {
-        
+      const edited = {"row_id":""+isEdit.idRow, "name":""+formData.name, "telp":""+formData.telp}
+      axios.put(process.env.REACT_APP_urlAPI+'&row_id='+isEdit.idRow, edited).then((res) => {
+        console.log(res)
+      }).catch((err) => {
+        console.log(err)
       })
       updateModal.show()
       setTimeout(() => { updateModal.hide() }, 3000)
     } else {
       let newData = {id: uid(), name: formData.name, telp: formData.telp}
       data.push(newData) //masukkan semua data dari input ke State contacts
-      axios.post(urlAPI, newData).then((res) => {
-
+      const added = [[uid(), formData.name, formData.telp]]
+      axios.post(process.env.REACT_APP_urlAPI, added).then((res) => {
+        console.log(res)
+      }).catch((err) => {
+        console.log(err)
       })
       successModal.show()
       setTimeout(() => { successModal.hide() }, 3000)
     }
-
-    setIsEdit({id: null, status: false})
+    setIsEdit({idRow: null, id: null, status: false})
     setContacts(data)
     setFormData({name: "", telp: ""}) //kosongkan input setelah berhasil submit
   }
 
-  const handleEdit = (idEdit) => {
+  const handleEdit = (idEdit, idRowEdit) => {
     let data = [...contacts]
     let findData = data.find((contact) => contact.id === idEdit) //cari data contact berdasarkan id contact yang di Edit
     setFormData({name: findData.name, telp: findData.telp}) //set input box dengan data contact yang telah ditemukan
-    setIsEdit({id: idEdit, status: true})
+    setIsEdit({idRow: idRowEdit, id: idEdit, status: true})
   }
 
-  const handleDelete = (idDelete) => {
+  const handleDelete = (idDelete, idRowDelete) => {
     const deleteModal = new Modal(document.getElementById('delete-modal'))
     let data = [...contacts]
     let filterData = data.filter((contact) => contact.id !== idDelete)  //menampilkan data contact kecuali id yang di delete
-    axios.delete(urlAPI+'/'+idDelete).then((res) => {
-
+    axios.delete(process.env.REACT_APP_urlAPI+'&row_id='+idRowDelete).then((res) => {
+      console.log(res)
+    }).catch((err) => {
+      console.log(err)
     })
     deleteModal.show()
     setTimeout(() => { deleteModal.hide() }, 3000)
@@ -103,8 +109,8 @@ const App = () => {
           </form>
           <List dataContact={contacts} handleEdit={handleEdit} handleDelete={handleDelete} />
           <div className="bg-dark text-center mt-5 px-3 py-2">
-            <div className="smallText text-light">Made with react & bootstrap.
-              This app can CRUD data into fake json API, just work on localhost.</div>
+            <div className="smallText text-light">Made with react & bootstrap. This app can perform CRUD operations.
+              No back-end. The data stored with Google Spreadsheet as API.</div>
           </div>
         </div>
       </div>

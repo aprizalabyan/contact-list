@@ -13,7 +13,7 @@ const List = ({dataContact, handleEdit, handleDelete}) => {
                 <span className="telp">{contact.telp}</span>
               </div>
               <div className="d-flex gap-2 align-self-end">
-                <button className="btn btn-dark" onClick={() => handleEdit(contact.id)}>Edit</button>
+                <button className="btn btn-dark" onClick={() => handleEdit(contact.id, contact.row_id)}>Edit</button>
                 <button className="btn btn-danger" data-bs-toggle="modal" data-bs-target={"#delete-modal-"+contact.id}>Delete</button>
               </div>
               <div className="modal fade" id={"delete-modal-"+contact.id} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -25,7 +25,7 @@ const List = ({dataContact, handleEdit, handleDelete}) => {
                     </div>
                     <div className="modal-footer">
                       <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                      <button type="button" className="btn btn-danger" onClick={() => handleDelete(contact.id)} data-bs-dismiss="modal">Delete</button>
+                      <button type="button" className="btn btn-danger" onClick={() => handleDelete(contact.id, contact.row_id)} data-bs-dismiss="modal">Delete</button>
                     </div>
                   </div>
                 </div>
