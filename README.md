@@ -11,5 +11,8 @@ Configurations
 - Data in `dbAPI.json` dynamically changes based on operations
 
 \
+If you want an online server example, switch to `spreadsheet-api` branch
+
+\
 Made with React & Bootstrap as framework.\
 Also use plugins such as Json-server, Axios, Uid and Iconify to support this web-app.
